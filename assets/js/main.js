@@ -204,3 +204,98 @@ formVenta.addEventListener("submit", function (e) {e.preventDefault();
 });
 //carga al iniciar la pagina//
 cargarDesdeLocalStorage();
+
+    //APIS USADAS//
+// Función para obtener ciudad desde IP
+async function obtenerCiudad() {
+  try {
+    const respuesta = await fetch("https://ipapi.co/json/");
+    const data = await respuesta.json();
+    return `${data.city}, ${data.country_name}`;
+  } catch (error) {
+    return "Ubicación desconocida";
+  }
+}
+
+// Función para obtener clima desde OpenWeatherMap
+async function obtenerClima(ciudad) {
+  try {
+    const key = "ab88fc9ddab9bba75cf91e69a50eff88"; //clave API
+    const response = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${ciudad}&appid=${key}&units=metric&lang=es`
+    );
+    const data = await response.json();
+    return {
+      temp: data.main.temp.toFixed(1),
+      desc: data.weather[0].description
+    };
+  } catch (error) {
+    console.error("Error obteniendo clima:", error);
+    throw error;
+  }
+}
+
+//Función para obtener fecha y hora desde WorldTimeAPI
+async function obtenerFechaHora() {
+  try {
+    const response = await fetch("https://worldtimeapi.org/api/ip");
+    const data = await response.json();
+    const fecha = new Date(data.datetime);
+
+    const fechaFormateada = fecha.toLocaleDateString("es-AR", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    });
+
+    const horaFormateada = fecha.toLocaleTimeString("es-AR", {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+
+    return { fecha: fechaFormateada, hora: horaFormateada };
+  } catch (error) {
+    console.error("Error obteniendo fecha/hora:", error);
+    return {
+      fecha: "Fecha desconocida",
+      hora: "Hora desconocida"
+    };
+  }
+}
+
+//Mostrar todo al iniciar
+(async function () {
+  const ciudad = await obtenerCiudad();
+  const ciudadNombre = ciudad.split(",")[0];
+  const { fecha, hora } = await obtenerFechaHora();
+
+  try {
+    const clima = await obtenerClima(ciudadNombre);
+    Toastify({
+      text: `📍 ${ciudad}\n📅 ${fecha} - 🕒 ${hora}\n🌡 ${clima.temp}°C, ${clima.desc}`,
+      duration: 8000,
+      gravity: "top",
+      position: "right",
+      style: {
+        background: "#2A3663",
+        borderRadius: "10px",
+        color: "#fff",
+        whiteSpace: "pre-line"
+      }
+    }).showToast();
+  } catch {
+    Toastify({
+      text: `📍 ${ciudad}\n📅 ${fecha} - 🕒 ${hora}\n⚠️ Clima no disponible`,
+      duration: 7000,
+      gravity: "top",
+      position: "right",
+      style: {
+        background: "#A0153E",
+        borderRadius: "10px",
+        color: "#fff",
+        whiteSpace: "pre-line"
+      }
+    }).showToast();
+  }
+})();
