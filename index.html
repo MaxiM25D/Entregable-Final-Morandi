@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Control de Stock</title>
+    <!-- CSS-->
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <!--JS-->
+    <script src="./assets/js/main.js" defer></script>
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+  </head>
+  <body>
+    <h1 class="titulos">📦Control de Stock📦</h1>
+
+    <!-- Formulario para agregar productos -->
+    <section>
+      <h2 class="titulos">Agregar Producto</h2>
+      <form id="form-agregar">
+        <input type="text" id="nombre" placeholder="Nombre" required />
+        <input
+          type="text"
+          id="precio"
+          placeholder="Precio (sin puntos ni comas)"
+          min="1"
+          step="1"
+          required
+        />
+        <input type="text" id="stock" placeholder="Stock" required />
+        <button class="btns" type="submit">Agregar</button>
+      </form>
+    </section>
+
+    <!-- Formulario para registrar venta -->
+    <section>
+      <h3 class="titulos">Registrar Venta</h3>
+      <form id="form-venta">
+        <input
+          type="text"
+          id="venta-nombre"
+          placeholder="Nombre del producto"
+          required
+        />
+        <button class="btns" type="submit">Registrar Venta</button>
+      </form>
+    </section>
+
+    <!-- Mostrar stock -->
+    <section>
+      <h4 class="titulos">Stock Actual</h4>
+      <ul id="lista-stock"></ul>
+      <button class="btns" id="btn-limpiar">🧹Borrar productos🧹</button>
+    </section>
+  </body>
+</html>
