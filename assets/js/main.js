@@ -220,7 +220,7 @@ async function obtenerCiudad() {
 // Función para obtener clima desde OpenWeatherMap
 async function obtenerClima(ciudad) {
   try {
-    const key = "ab88fc9ddab9bba75cf91e69a50eff88"; //clave API
+    const key = "ab88fc9ddab9bba75cf91e69a50eff88"; // tu clave API
     const response = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?q=${ciudad}&appid=${key}&units=metric&lang=es`
     );
@@ -235,7 +235,7 @@ async function obtenerClima(ciudad) {
   }
 }
 
-//Función para obtener fecha y hora desde WorldTimeAPI
+// Función para obtener fecha y hora desde WorldTimeAPI
 async function obtenerFechaHora() {
   try {
     const response = await fetch("https://worldtimeapi.org/api/ip");
@@ -264,38 +264,23 @@ async function obtenerFechaHora() {
   }
 }
 
-//Mostrar todo al iniciar
+// Mostrar todo fijo al iniciar
 (async function () {
   const ciudad = await obtenerCiudad();
   const ciudadNombre = ciudad.split(",")[0];
   const { fecha, hora } = await obtenerFechaHora();
+  const contenedorInfo = document.getElementById("info-api");
 
   try {
     const clima = await obtenerClima(ciudadNombre);
-    Toastify({
-      text: `📍 ${ciudad}\n📅 ${fecha} - 🕒 ${hora}\n🌡 ${clima.temp}°C, ${clima.desc}`,
-      duration: 8000,
-      gravity: "top",
-      position: "right",
-      style: {
-        background: "#2A3663",
-        borderRadius: "10px",
-        color: "#fff",
-        whiteSpace: "pre-line"
-      }
-    }).showToast();
+    contenedorInfo.textContent = 
+`📍 ${ciudad}
+📅 ${fecha} - 🕒 ${hora}
+🌡 ${clima.temp}°C, ${clima.desc}`;
   } catch {
-    Toastify({
-      text: `📍 ${ciudad}\n📅 ${fecha} - 🕒 ${hora}\n⚠️ Clima no disponible`,
-      duration: 7000,
-      gravity: "top",
-      position: "right",
-      style: {
-        background: "#A0153E",
-        borderRadius: "10px",
-        color: "#fff",
-        whiteSpace: "pre-line"
-      }
-    }).showToast();
+    contenedorInfo.textContent =
+`📍 ${ciudad}
+📅 ${fecha} - 🕒 ${hora}
+⚠️ Clima no disponible`;
   }
 })();

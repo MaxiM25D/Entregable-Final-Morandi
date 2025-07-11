@@ -7,6 +7,16 @@ body {
   background-color: #1D2B53;
 }
 
+.info-api {
+  background-color: #2A3663;
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  white-space: pre-line;
+}
+
 .titulos {
   text-align: center;
   background: #A0153E;
